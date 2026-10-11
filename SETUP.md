@@ -115,22 +115,33 @@ Add a template by writing a builder function in `src/engine/templates/` (`advent
 `helpers.ts` provides the builder (tracks, lanes, shots with Ken Burns moves, text, rectangles with gradients, music placement) and `scenes.ts`
 a library of film scenes (title and chapter cards, lower thirds, captions, quotes, stats, credits).
 
-### Template files (.spool)
+### Template and timeline files (.spool and .otio)
 
-A template can be saved and shared as a **`.spool` file** (plain JSON, MIME type `application/json`).
+Spool saves and opens two file types. Both are plain JSON.
 
-- **Export:** in the editor, Project → *Save as template file* downloads the open project, for example `road-trip-diary.spool`.
-- **Import:** on the Projects page, click *Import* and choose a `.spool` file. It opens as a new project; the file itself is never changed.
+| Format | Extension | Use it for | Fidelity |
+| --- | --- | --- | --- |
+| Spool template | `.spool` | Sharing a template between Spool installs | Everything: text, shapes, animations, timing, markers, music |
+| [OpenTimelineIO](https://opentimelineio.readthedocs.io/) | `.otio` | Moving a timeline to or from other video editors | Tracks, clips, gaps, timing, markers, frame rate |
 
-File layout:
+No single file type carries a Spool project into every other editor (text, shapes and animations are Spool concepts), so Spool uses the open industry interchange standard for the timeline. OpenTimelineIO is maintained by the Academy Software Foundation and is read and written by DaVinci Resolve, Premiere Pro and Avid (through adapters), Nuke Studio, Blender and others.
+
+- **Save:** in the editor, Project → *Save as template file (.spool)* or *Export timeline (.otio)*, for example `road-trip-diary.spool`.
+- **Import:** on the Projects page, click *Import* and choose either type. Spool reads the file's content, so a renamed file still opens correctly. It opens as a new project and the file is never changed.
+
+**`.spool` layout:**
 
 ```json
 { "format": "spool-template", "version": 1, "name": "My template", "exportedAt": "2026-10-11T09:00:00Z", "project": { "...": "the project model from shared/types.ts" } }
 ```
 
-What is and is not included: the layout, text, shapes, animations, timing, markers and export settings travel with the file, along with references to the bundled music. **Uploaded media** (your own images, video and audio) does not, because those files live on the machine that uploaded them. On import, clips that depend on uploaded media are left out and the editor says how many; everything else opens normally.
+**`.otio` mapping:** every Spool track becomes an OTIO track (frontmost track last, as OTIO expects), clips keep their start, duration and source offset, gaps are written explicitly and markers become OTIO markers. Image, video and audio clips carry an external media reference; text and shapes are written as generator references (`spool.text`, `spool.shape`) with their main parameters. A full copy of each clip and layer is stored under the `spool` metadata key, which OTIO reserves for application data and other editors ignore. A file saved by Spool therefore reopens in Spool exactly as it was.
 
-The importer treats the file as untrusted (`src/engine/templateFile.ts`): it validates the structure and limits (25 MB, up to 5 minutes), rebuilds bundled music assets from the local catalogue instead of trusting URLs in the file, and gives the project a fresh id. Invalid files show a plain error message on the Projects page.
+**Importing from another editor:** without Spool metadata, each video clip becomes a coloured placeholder frame of the right length and position, named after the clip, ready for your own media. Cuts, gaps, track names, markers and the frame rate are kept. Audio clips, transitions and nested stacks are skipped and counted, because their media cannot come with the file. Timelines longer than 5 minutes are cut at 5 minutes.
+
+**What is and is not included:** uploaded media (your own images, video and audio) never travels in either file, because those files live on the machine that uploaded them. On import, clips that depend on uploaded media are left out and the editor says how many; everything else opens normally.
+
+Both importers treat the file as untrusted (`src/engine/templateFile.ts`, `src/engine/otio.ts`): they validate the structure and limits (25 MB, up to 5 minutes), rebuild bundled music assets from the local catalogue instead of trusting URLs in the file, and give the project a fresh id. Invalid files show a plain error message on the Projects page.
 
 ### Browsing templates
 

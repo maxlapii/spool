@@ -18,10 +18,12 @@
 </p>
 
 <p align="center">
-  <a href="docs/spool-intro.mp4">
-    <img src="docs/intro-poster.png" width="900" alt="Watch the Spool introduction video (4K, 43 seconds)">
+  <a href="docs/spool-intro.mp4" title="Open the 4K video with sound">
+    <img src="docs/spool-intro.gif" width="900" alt="Spool introduction: templates, canvas and timeline, motion, Claude AI, export and sharing. Click for the 4K video with sound.">
   </a>
 </p>
+
+<p align="center"><sub>Plays automatically and loops. Click it for the full <a href="docs/spool-intro.mp4">4K video with sound</a> (47 s).</sub></p>
 
 Spool puts a composition canvas, a multitrack timeline and an AI co-editor in one calm workspace.
 Start from a template or a blank project, describe what you want to Claude or edit by hand, and export a real MP4 or WebM.
@@ -30,7 +32,7 @@ Every feature is free: no subscriptions, watermarks, credits or premium gates.
 ## Highlights
 
 - **Start in seconds.** 12 bundled templates, from 4-minute travel films to a 3-minute company trip recap and 15-second intros, all cut to music and fully editable.
-- **Share your own.** Save any project as a `.spool` template file and import it on any machine with one click.
+- **Share and interchange.** Save any project as a `.spool` template, or export its timeline as an open `.otio` (OpenTimelineIO) file that DaVinci Resolve, Premiere Pro and other editors can open. Import either with one click.
 - **Edit by talking.** Ask Claude to add a title, slow an animation or reframe for Reels. It uses the same operations as the UI, and one request is one undo step.
 - **A real timeline.** Multiple tracks, trim, split, snapping, section markers, speed control and zoom, always visible under the canvas.
 - **Direct manipulation.** Move, resize and rotate text, shapes, images and video on the canvas, with snapping, guides and inline text editing.
@@ -47,9 +49,9 @@ Every feature is free: no subscriptions, watermarks, credits or premium gates.
 Browse templates by mood (Adventure, Chill, Brand) or search by name or song.
 Each one is an ordinary project: placeholders are moving colour frames you replace by dragging your own clips in, and every template ships with a full-length music track.
 
-## Share templates
+## Share templates and timelines
 
-Turn any project into a template file with **Project → Save as template file**, and open one with **Import** on the Projects page. A `.spool` file is plain JSON that keeps the layout, text, shapes, animations, timing and markers. Uploaded media stays on the machine it came from, so imported templates open with placeholders where your own clips go. Files are validated before they open, and the format is described in **[SETUP.md](SETUP.md)**.
+Turn any project into a **`.spool` template file** with Project → Save as template file, or hand the timeline to another editor with **Export timeline (.otio)**. OpenTimelineIO is the open interchange standard from the Academy Software Foundation, supported by DaVinci Resolve, Premiere Pro, Avid, Nuke Studio and Blender, so it works worldwide. Open either type with **Import** on the Projects page, including `.otio` files made in other editors. Uploaded media stays on the machine it came from, so imported files open with placeholders where your own clips go. Files are validated before they open, and the formats are described in **[SETUP.md](SETUP.md)**.
 
 ## Edit with Claude
 

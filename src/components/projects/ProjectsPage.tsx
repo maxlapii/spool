@@ -3,7 +3,8 @@ import { ArrowUpDown, Clapperboard, Copy, LayoutGrid, LayoutTemplate, List, Plus
 import type { AspectRatio, ProjectSummary } from '@/types'
 import { ASPECT_PRESETS } from '@/types'
 import { projectService } from '@/services/projects'
-import { parseTemplateFile, TEMPLATE_FILE_EXTENSION, TEMPLATE_FILE_MAX_BYTES } from '@/engine/templateFile'
+import { IMPORT_ACCEPT, parseImportFile } from '@/engine/importFile'
+import { TEMPLATE_FILE_MAX_BYTES } from '@/engine/templateFile'
 import { createEmptyProject } from '@/engine/project'
 import { TEMPLATES, filterCounts, filterTemplates, type TemplateDef, type TemplateFilter } from '@/engine/templates'
 import { navigate } from '@/hooks/useHashRoute'
@@ -95,8 +96,8 @@ export function ProjectsPage() {
   const importTemplate = async (file: File) => {
     setImportError(null)
     try {
-      if (file.size > TEMPLATE_FILE_MAX_BYTES) throw new Error('This file is too large to be a Spool template (the limit is 25 MB).')
-      const { project, droppedClips } = parseTemplateFile(await file.text())
+      if (file.size > TEMPLATE_FILE_MAX_BYTES) throw new Error('This file is too large to import (the limit is 25 MB).')
+      const { project, droppedClips } = parseImportFile(await file.text())
       setCreating(true)
       await projectService.save(project)
       if (droppedClips > 0) {
@@ -157,8 +158,8 @@ export function ProjectsPage() {
               ))}
             </select>
           </label>
-          <input ref={fileInput} type="file" accept={`${TEMPLATE_FILE_EXTENSION},application/json`} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) void importTemplate(f) }} />
-          <button className="btn" onClick={() => fileInput.current?.click()} disabled={creating} title="Open a .spool template file"><Upload size={14} /> Import</button>
+          <input ref={fileInput} type="file" accept={IMPORT_ACCEPT} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) void importTemplate(f) }} />
+          <button className="btn" onClick={() => fileInput.current?.click()} disabled={creating} title="Open a .spool template or an .otio timeline from another editor"><Upload size={14} /> Import</button>
           <button className="btn-primary" onClick={createNew} disabled={creating}><Plus size={14} /> New project</button>
         </div>
       </header>
