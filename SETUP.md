@@ -62,7 +62,7 @@ data/            local storage for projects, uploads, exports and a trash folder
 
 ## Branding
 
-The name lives in `shared/brand.ts` (product name, file-name slug and tagline), so it is easy to change. The logo is the name itself (`src/components/ui/Wordmark.tsx`): "spool" in bold geometric type where the two o's are eyes with brand-gradient rings. On load the letters rise in one by one and the eyes open as if waking up and glance left, then right. After that the pupils follow your pointer, the eyes blink at random (sometimes twice), glance around when idle or on touch screens, widen on hover and one winks on click. With reduced motion everything stays still. The browser tab icon is animated too: it draws the same eyes on a canvas and swaps them in as the page icon whenever they move, so the tab wakes up, follows your pointer, blinks and glances around exactly like the header (`src/utils/eyes.ts` holds the shared behaviour, `src/utils/faviconEyes.ts` draws the icon). When nothing moves it stops redrawing, and `public/favicon.svg` is the still icon for browsers that ignore icon changes. Letter spacing is set per letter so the gaps between s, p, the two eyes and l are all equal. Projects, theme and layout saved in your browser under the earlier name are carried over automatically.
+The name lives in `shared/brand.ts` (product name, file-name slug and tagline), so it is easy to change. The logo is the name itself (`src/components/ui/Wordmark.tsx`): "spool" in bold geometric type where the bowl of the p is a solid film reel with three open windows, and the two o's are eyes with brand-gradient rings. On load the reel winds in and the stem unrolls; the reel turns a third of a turn when the pointer enters and a full turn on click (`.wm-reel` in `src/index.css`). On load the letters rise in one by one and the eyes open as if waking up and glance left, then right. After that the pupils follow your pointer, the eyes blink at random (sometimes twice), glance around when idle or on touch screens, widen on hover and one winks on click. With reduced motion everything stays still. The browser tab icon is animated too: it draws the same eyes on a canvas and swaps them in as the page icon whenever they move, so the tab wakes up, follows your pointer, blinks and glances around exactly like the header (`src/utils/eyes.ts` holds the shared behaviour, `src/utils/faviconEyes.ts` draws the icon). When nothing moves it stops redrawing, and `public/favicon.svg` is the still icon for browsers that ignore icon changes. Letter spacing is set per letter so the gaps between s, p, the two eyes and l are all equal. Projects, theme and layout saved in your browser under the earlier name are carried over automatically.
 
 ## Workspace reference
 
@@ -84,7 +84,7 @@ editor toolbar. Light is the default and the choice is remembered per browser.
 
 ## Templates and music
 
-The Projects page shows 28 bundled templates in a full-width strip that glides on its own (hover to pause) and can be browsed by hand, with live previews rendered by the same canvas renderer the exporter uses
+The Projects page shows 12 bundled templates in a full-width strip that glides on its own (hover to pause) and can be browsed by hand, with live previews rendered by the same canvas renderer the exporter uses
 (`src/engine/templates/`). Every template is an ordinary project: placeholders are coloured, gently moving frames you replace by
 dragging your own clips from Project → Media onto them. Every template already carries a full-length music track, and storyboards are cut in whole bars so scene changes land on the beat.
 
@@ -95,60 +95,48 @@ dragging your own clips from Project → Media onto them. Every template already
 | Epic adventure film | 16:9 · 4:00 | Summit (90 BPM, cinematic build) |
 | Island hopping journal | 16:9 · 4:00 | Golden Hour (84 BPM, warm and chilled) |
 | Road trip diary | 16:9 · 2:58 | Open Road (124 BPM, driving) |
-| Wild trails & camping | 16:9 · 3:43 | Trailhead (112 BPM, acoustic) |
 | Around the world · year recap | 16:9 · 4:00 | Trailhead |
 | Backpacker vlog | 9:16 · 3:09 | Trailhead |
-| City break weekend | 9:16 · 2:00 | Open Road |
 | Beach sunset escape | 9:16 · 2:17 | Golden Hour |
 
-**Mood templates (16:9 only)**, two per new music track, cut in whole bars so scene changes land on the beat:
+**Mood template (16:9)**, cut in whole bars to the Drift track so scene changes land on the beat:
 
 | Template | Length | Music | Idea |
 | --- | --- | --- | --- |
 | Slow travel journal | 4:00 | Drift | Three unhurried parts, polaroids, quotes, soft captions |
-| Morning retreat | 1:20 | Drift | Calm wellness reel with a quote and sign-off |
-| Night shift lookbook | 3:33 | Boom Bap | City at night: beat-cut hooks, spots, murals, stats |
-| Beat lyric video | 1:25 | Boom Bap | Big lyric lines rising on the beat; replace the words |
-| Surprise trip reveal | 2:08 | Plot Twist | Clues, a silent "?" beat, the reveal, then a second twist |
-| Guess the place | 1:04 | Plot Twist | Travel quiz: three clues, a silent beat, the answer drops |
-| Friends trip recap | 2:24 | Good Vibes | Day chips, beat cuts, polaroids, stats and a big finale |
-| Summer fun reel | 1:07 | Good Vibes | One-minute highlights that lift with the key change |
 
-The two Plot Twist templates place their black "?" frames on the track's silent stop bars. Templates live in `src/engine/templates/moods.ts`.
+Templates live in `src/engine/templates/moods.ts`.
 
-**Multi-music templates (16:9)**: each section is cut to its own song at that song's tempo, and the songs crossfade on two overlapping audio tracks (Music A and Music B):
+**Company trip recap (16:9, 3:00)**: an original team trip film in 75 bars of Good Vibes (100 BPM, exactly three minutes): title, three day chapters, team games, stats, gala night, credits and a thank-you (`src/engine/templates/company.ts`).
 
-| Template | Length | Songs |
-| --- | --- | --- |
-| Journey in four moods | 3:14 | Drift, Trailhead, Boom Bap, Good Vibes |
-| Travel mixtape | 3:06 | Drift, Trailhead, Open Road, Boom Bap, Plot Twist, Good Vibes, each introduced by a "now playing" card |
-| Mood switch | 0:59 | Drift, Plot Twist (with its silent stop bar), Good Vibes |
-
-**Group trip story (16:9, 4:39)**: a friends' bus trip in six sections, each with its own music, crossfaded between sections:
-
-| Section | Music | What happens |
-| --- | --- | --- |
-| 1 Intro | Drift (slow, lazy) | Title card and two slow dissolves |
-| 2 The route | Trailhead (chill verse, build, chorus drop) | A map where the route draws itself, a bus drives it, thumbnails pop at each stop, and the arrival lands on the chorus |
-| 3 Activities | Golden Hour (smooth, romantic) | Warm shots with lower-thirds, a polaroid and a triptych |
-| 4 Group fun | Boom Bap then Good Vibes (hip, then enjoy) | Fast group clips, photos, blooper reel and stats |
-| 5 Members | Drift, kept at half volume | Six cards, each with a talking-video frame, a name, a role and a wish for the next trip |
-| 6 Close | Golden Hour outro (slowing down) | Six thumbnails, the group photo and a thank-you |
-
-The map is built from editable shapes (water, roads, parks), so it needs no map service. To use your own map, take a Google Maps screenshot or screen recording (keep its attribution visible and follow Google's terms), drop it over the stylised map, then move the pins, route segments and bus keyframes to match. Source: `src/engine/templates/grouptrip.ts`.
-
-**Short social templates:** Music montage (9:16, 34 s), Season recap (9:16, 27 s), Life in 2026 (16:9, 27 s), Destination highlights (9:16, 20 s),
-Top 5 places (9:16, 25 s), Travel diary (16:9, 24 s), Wanderlust quote (1:1, 12 s) and the Brand launch promo (16:9, 15 s).
+**Short templates:** Vlog intro (16:9, 15 s, Open Road: wide opener, four beat cuts with a REC badge, title reveal in a letterbox), Travel diary (16:9, 24 s), Wanderlust quote (1:1, 12 s) and the Brand launch promo (16:9, 15 s).
 
 Add a template by writing a builder function in `src/engine/templates/` (`adventure.ts` for long films, `travel.ts` for short ones) and registering it;
 `helpers.ts` provides the builder (tracks, lanes, shots with Ken Burns moves, text, rectangles with gradients, music placement) and `scenes.ts`
 a library of film scenes (title and chapter cards, lower thirds, captions, quotes, stats, credits).
 
+### Template files (.spool)
+
+A template can be saved and shared as a **`.spool` file** (plain JSON, MIME type `application/json`).
+
+- **Export:** in the editor, Project → *Save as template file* downloads the open project, for example `road-trip-diary.spool`.
+- **Import:** on the Projects page, click *Import* and choose a `.spool` file. It opens as a new project; the file itself is never changed.
+
+File layout:
+
+```json
+{ "format": "spool-template", "version": 1, "name": "My template", "exportedAt": "2026-10-11T09:00:00Z", "project": { "...": "the project model from shared/types.ts" } }
+```
+
+What is and is not included: the layout, text, shapes, animations, timing, markers and export settings travel with the file, along with references to the bundled music. **Uploaded media** (your own images, video and audio) does not, because those files live on the machine that uploaded them. On import, clips that depend on uploaded media are left out and the editor says how many; everything else opens normally.
+
+The importer treats the file as untrusted (`src/engine/templateFile.ts`): it validates the structure and limits (25 MB, up to 5 minutes), rebuilds bundled music assets from the local catalogue instead of trusting URLs in the file, and gives the project a fresh id. Invalid files show a plain error message on the Projects page.
+
 ### Browsing templates
 
 Drag the strip with a mouse, swipe on touch, scroll sideways with a trackpad or Shift + wheel, press the left and right arrow keys, or use the arrow buttons. Vertical scrolling still moves the page.
-Search matches names, descriptions, song names and formats (every word must match). The category chips are All, Adventure, Chill, Hip, Surprise, Enjoy, Multi-music and Brand, each with a count; a template belongs to the mood of every song it plays.
-The filter logic lives in `src/engine/templates/filters.ts` and the multi-song templates in `src/engine/templates/mixes.ts`.
+Search matches names, descriptions, song names and formats (every word must match). The category chips (All, Adventure, Chill, Brand and any other mood that has a template) each show a count and are hidden when empty; a template belongs to the mood of every song it plays.
+The filter logic lives in `src/engine/templates/filters.ts`.
 
 ### Music
 

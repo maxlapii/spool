@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { ArrowUpDown, Clapperboard, Copy, LayoutGrid, LayoutTemplate, List, Plus, Search, Trash2, WifiOff } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ArrowUpDown, Clapperboard, Copy, LayoutGrid, LayoutTemplate, List, Plus, Search, Trash2, Upload, WifiOff } from 'lucide-react'
 import type { AspectRatio, ProjectSummary } from '@/types'
 import { ASPECT_PRESETS } from '@/types'
 import { projectService } from '@/services/projects'
+import { parseTemplateFile, TEMPLATE_FILE_EXTENSION, TEMPLATE_FILE_MAX_BYTES } from '@/engine/templateFile'
 import { createEmptyProject } from '@/engine/project'
 import { TEMPLATES, filterCounts, filterTemplates, type TemplateDef, type TemplateFilter } from '@/engine/templates'
 import { navigate } from '@/hooks/useHashRoute'
@@ -89,6 +90,24 @@ export function ProjectsPage() {
     await projectService.save(project)
     navigate({ page: 'editor', projectId: project.id })
   }
+  const fileInput = useRef<HTMLInputElement>(null)
+  const [importError, setImportError] = useState<string | null>(null)
+  const importTemplate = async (file: File) => {
+    setImportError(null)
+    try {
+      if (file.size > TEMPLATE_FILE_MAX_BYTES) throw new Error('This file is too large to be a Spool template (the limit is 25 MB).')
+      const { project, droppedClips } = parseTemplateFile(await file.text())
+      setCreating(true)
+      await projectService.save(project)
+      if (droppedClips > 0) {
+        try { sessionStorage.setItem(storageKey('import-note'), `${droppedClips} clip${droppedClips === 1 ? '' : 's'} used uploaded media that is not in the file and ${droppedClips === 1 ? 'was' : 'were'} left out.`) } catch { /* private mode */ }
+      }
+      navigate({ page: 'editor', projectId: project.id })
+    } catch (e) {
+      setCreating(false)
+      setImportError(e instanceof Error ? e.message : 'The file could not be imported.')
+    }
+  }
   const useTemplate = async (t: TemplateDef) => {
     setCreating(true)
     const project = t.build()
@@ -138,10 +157,18 @@ export function ProjectsPage() {
               ))}
             </select>
           </label>
+          <input ref={fileInput} type="file" accept={`${TEMPLATE_FILE_EXTENSION},application/json`} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) void importTemplate(f) }} />
+          <button className="btn" onClick={() => fileInput.current?.click()} disabled={creating} title="Open a .spool template file"><Upload size={14} /> Import</button>
           <button className="btn-primary" onClick={createNew} disabled={creating}><Plus size={14} /> New project</button>
         </div>
       </header>
 
+      {importError && (
+        <div role="alert" className="mx-auto mt-3 flex w-full max-w-[1200px] items-center justify-between gap-3 rounded-lg border border-red-300/60 bg-red-50 px-3 py-2 text-[12px] text-red-700 dark:bg-red-950/40 dark:text-red-300">
+          <span>{importError}</span>
+          <button className="font-semibold underline" onClick={() => setImportError(null)}>Dismiss</button>
+        </div>
+      )}
       <main className="w-full flex-1 px-1 py-5 sm:px-2">
         <section className="mb-6">
           <SectionHeader icon={<LayoutTemplate size={15} />} title="Templates" count={shownTemplates.length === TEMPLATES.length ? TEMPLATES.length : shownTemplates.length} subtitle="Travel films cut to music. Every element stays editable; drop your own clips onto the placeholders.">

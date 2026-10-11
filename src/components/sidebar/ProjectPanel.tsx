@@ -1,10 +1,11 @@
-import { Copy, Keyboard, Trash2 } from 'lucide-react'
+import { Copy, Download, Keyboard, Trash2 } from 'lucide-react'
 import { ASPECT_PRESETS, MAX_COMPOSITION_DURATION, type AspectRatio } from '@/types'
 import { useEditor } from '@/store/editorStore'
 import { deleteMarker, renameProject, setAspectRatio, updateComposition, updateMarker } from '@/engine/operations'
 import { projectService } from '@/services/projects'
 import { navigate } from '@/hooks/useHashRoute'
 import { uid } from '@/utils/id'
+import { buildTemplateFile, templateFileName } from '@/engine/templateFile'
 import { APP_NAME } from '@shared/brand'
 import { ColorInput, Field, NumberInput, Section, SelectInput } from '../ui/fields'
 import { MediaLibrary, MusicLibrary } from './MediaPanel'
@@ -24,6 +25,16 @@ export function ProjectPanel() {
   const showToast = useEditor((s) => s.showToast)
   const setCanvasZoom = useEditor((s) => s.setCanvasZoom)
   const c = project.composition
+
+  const saveTemplateFile = () => {
+    const url = URL.createObjectURL(new Blob([buildTemplateFile(project)], { type: 'application/json' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = templateFileName(project.name)
+    a.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+    showToast('Template file saved. Uploaded media is not included.')
+  }
 
   const duplicate = async () => {
     const now = new Date().toISOString()
@@ -48,6 +59,7 @@ export function ProjectPanel() {
         <Field label="Background" inline><ColorInput value={c.backgroundColor} onDragStart={snapshot} onChange={(v) => v && patch((p) => updateComposition(p, { backgroundColor: v }))} /></Field>
         <p className="text-[10.5px] text-ink-faint">Compositions can be up to 5 minutes (300s) long.</p>
         <button className="btn w-full" onClick={duplicate}><Copy size={12} /> Duplicate project</button>
+        <button className="btn w-full" onClick={saveTemplateFile} title="Download this project as a .spool template file"><Download size={12} /> Save as template file</button>
       </Section>
       <SpeedPanel />
       <Section title="Media">

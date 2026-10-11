@@ -25,8 +25,14 @@ export function Editor({ projectId }: { projectId: string }) {
     let cancelled = false
     void projectService.load(projectId).then((p) => {
       if (cancelled) return
-      if (p) loadProject(normalizeProject(p))
-      else setMissing(true)
+      if (p) {
+        loadProject(normalizeProject(p))
+        // A template file import can leave out clips whose uploaded media is not in the file; say so once.
+        try {
+          const note = sessionStorage.getItem(storageKey('import-note'))
+          if (note) { sessionStorage.removeItem(storageKey('import-note')); useEditor.getState().showToast(note) }
+        } catch { /* private mode */ }
+      } else setMissing(true)
     })
     return () => { cancelled = true; flushSave() }
   }, [projectId, loadProject])

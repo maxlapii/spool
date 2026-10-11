@@ -17,19 +17,26 @@
   <img src="docs/editor.png" width="900" alt="Spool editor: tabbed side panel, canvas preview and multitrack timeline">
 </p>
 
+<p align="center">
+  <a href="docs/spool-intro.mp4">
+    <img src="docs/intro-poster.png" width="900" alt="Watch the Spool introduction video (4K, 43 seconds)">
+  </a>
+</p>
+
 Spool puts a composition canvas, a multitrack timeline and an AI co-editor in one calm workspace.
 Start from a template or a blank project, describe what you want to Claude or edit by hand, and export a real MP4 or WebM.
 Every feature is free: no subscriptions, watermarks, credits or premium gates.
 
 ## Highlights
 
-- **Start in seconds.** 28 bundled templates, from 4-minute travel films to 15-second social reels, all cut to music and fully editable.
+- **Start in seconds.** 12 bundled templates, from 4-minute travel films to a 3-minute company trip recap and 15-second intros, all cut to music and fully editable.
+- **Share your own.** Save any project as a `.spool` template file and import it on any machine with one click.
 - **Edit by talking.** Ask Claude to add a title, slow an animation or reframe for Reels. It uses the same operations as the UI, and one request is one undo step.
 - **A real timeline.** Multiple tracks, trim, split, snapping, section markers, speed control and zoom, always visible under the canvas.
 - **Direct manipulation.** Move, resize and rotate text, shapes, images and video on the canvas, with snapping, guides and inline text editing.
 - **Motion built in.** Entrance and exit presets, keyframes, easings and transitions that follow the playhead exactly.
 - **Honest export.** Frames render in your browser and FFmpeg mixes the audio and encodes the file. What you see is what you get.
-- **Yours to keep.** Projects autosave locally, media stays on your machine, and there is no account to create.
+- **Yours to keep.** Projects autosave locally, media stays on your machine, there is no account to create and nothing is paywalled.
 
 ## Start from a template
 
@@ -37,8 +44,12 @@ Every feature is free: no subscriptions, watermarks, credits or premium gates.
   <img src="docs/projects.png" width="900" alt="Projects page with a gliding strip of templates and the project list">
 </p>
 
-Browse templates by mood (Adventure, Chill, Hip, Surprise, Enjoy, Multi-music, Brand) or search by name or song.
+Browse templates by mood (Adventure, Chill, Brand) or search by name or song.
 Each one is an ordinary project: placeholders are moving colour frames you replace by dragging your own clips in, and every template ships with a full-length music track.
+
+## Share templates
+
+Turn any project into a template file with **Project → Save as template file**, and open one with **Import** on the Projects page. A `.spool` file is plain JSON that keeps the layout, text, shapes, animations, timing and markers. Uploaded media stays on the machine it came from, so imported templates open with placeholders where your own clips go. Files are validated before they open, and the format is described in **[SETUP.md](SETUP.md)**.
 
 ## Edit with Claude
 
@@ -93,6 +104,8 @@ Choose 1920×1080, 1080×1920, 1080×1080 and more, 24 to 60 fps, MP4 (H.264) or
 - Undo and redo for every edit, manual or AI
 - Keyboard shortcuts for playback, split, duplicate, nudge and save
 - Duplicate, rename and reopen projects, with visible autosave status
+- Speed control for the whole video or any section, in preview and in the export
+- Light and dark themes, and an animated logo whose film-reel "p" turns as you hover
 
 ## Get started
 

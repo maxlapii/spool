@@ -14,7 +14,7 @@ export function TemplateFilters({
   return (
     <div className="mb-1 flex flex-wrap items-center gap-2">
       <div className="no-scrollbar -mx-1 flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto px-1 py-0.5" role="group" aria-label="Filter templates by category">
-        {TEMPLATE_FILTERS.map((f) => {
+        {TEMPLATE_FILTERS.filter((f) => f.id === 'all' || f.id === filter || counts[f.id] > 0).map((f) => { // categories with no template are hidden
           const active = filter === f.id
           return (
             <button

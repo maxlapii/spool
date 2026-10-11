@@ -3,12 +3,11 @@ import { APP_NAME } from '@shared/brand'
 import { lookVector, subscribeEyes, wakeEyes } from '@/utils/eyes'
 
 /**
- * Spool's logo is its name: "spool", where the two o's are eyes.
+ * Spool's logo is its name: "spool", where the bowl of the p is a solid three-window film reel, and the two o's are eyes.
  *
- * On load the letters rise in one by one, the eyes open as if waking up and glance left, then right. After that the
- * pupils follow the pointer, the eyes blink at random (sometimes twice), they glance around when nobody is moving the
- * pointer (and on touch screens), widen on hover and one eye winks when you click. With reduced motion everything
- * stays still and the eyes look straight ahead.
+ * The p is a bold ink letter whose bowl is a solid film reel with three open windows. The reel winds in and the stem
+ * unrolls on load; when the pointer enters, the reel turns a third of a turn, and a click turns it a full turn (with the
+ * eye wink). The three windows are identical, so every move settles back into the same letter.
  */
 export function Wordmark({ size = 32, className = '' }: { size?: number; className?: string }) {
   const rootRef = useRef<HTMLSpanElement>(null)
@@ -33,8 +32,15 @@ export function Wordmark({ size = 32, className = '' }: { size?: number; classNa
     wakeEyes()
     // A wink on click: the left eye closes for a moment.
     const wink = () => { balls[0].classList.add('is-blink'); later.add(window.setTimeout(() => balls[0].classList.remove('is-blink'), 380)) }
-    root.addEventListener('click', wink)
-    return () => { stop(); root.removeEventListener('click', wink); later.forEach((t) => clearTimeout(t)) }
+    // The three windows are identical, so a third of a turn looks the same as no turn.
+    const reel = root.querySelector<SVGElement>('.wm-reel')
+    let angle = 0
+    const turn = (by: number) => { angle += by; reel?.style.setProperty('--turn', `${angle}deg`) }
+    const onEnter = () => turn(120)
+    const onClick = () => { wink(); turn(360) }
+    root.addEventListener('pointerenter', onEnter)
+    root.addEventListener('click', onClick)
+    return () => { stop(); root.removeEventListener('pointerenter', onEnter); root.removeEventListener('click', onClick); later.forEach((t) => clearTimeout(t)) }
   }, [])
 
   const eye = (i: number) => (
@@ -44,10 +50,21 @@ export function Wordmark({ size = 32, className = '' }: { size?: number; classNa
   )
   const letter = (c: string, i: number, extra = '') => <span className={`wm-letter ${extra}`} style={{ ['--i' as string]: i }} aria-hidden>{c}</span>
 
+  // The p, drawn in a 68x80 box (1 unit = 0.01em, baseline at y=60): a solid reel disc with three open windows and a hub
+  // hole (even-odd fill, so the page shows through), and the stem in front of it.
+  const film = (
+    <span className="wm-p wm-letter" style={{ ['--i' as string]: 1 }} aria-hidden>
+      <svg className="wm-strip" viewBox="0 0 68 80">
+        <path className="wm-reel" fillRule="evenodd" d="M8.00 30.00a30 30 0 1 0 60 0a30 30 0 1 0 -60 0zM47.10 30.00a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0zM22.35 44.29a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0zM22.35 15.71a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0zM34.40 30.00a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z" />
+        <rect className="wm-stem" x="0" y="0" width="17" height="80" />
+      </svg>
+    </span>
+  )
+
   return (
     <span ref={rootRef} className={`wordmark ${className}`} style={{ fontSize: size }} role="img" aria-label={APP_NAME}>
       {letter('s', 0)}
-      {letter('p', 1, 'wm-p')}
+      {film}
       {eye(2)}
       {eye(3)}
       {letter('l', 4, 'wm-l')}

@@ -18,10 +18,8 @@ export const barsDuration = (trackId: string, bars: number) => Math.ceil(barSeco
 const EPIC: Style = { heading: 'Playfair Display', script: 'DM Serif Display', sans: 'Inter', accent: '#e0b15a', ink: '#ffffff', mute: 'rgba(255,255,255,0.78)', dark: '#0d1117', tones: ['#5d7f8c', '#a77f64', '#6f8c70', '#7b86a8', '#b79d6a', '#8a6f86'] }
 const ISLAND: Style = { heading: 'Playfair Display', script: 'DM Serif Display', sans: 'Poppins', accent: '#ff7a59', ink: '#ffffff', mute: 'rgba(255,255,255,0.82)', dark: '#0f2a33', tones: ['#5fb8c9', '#f0b27a', '#7fc4a8', '#8fa7d6', '#e6c98e', '#c99cc0'] }
 const YEAR: Style = { heading: 'Poppins', script: 'DM Serif Display', sans: 'Plus Jakarta Sans', accent: '#9a5bf5', ink: '#ffffff', mute: 'rgba(255,255,255,0.8)', dark: '#14111f', tones: ['#7c8fd6', '#e59a7a', '#66b8a4', '#c3a0e0', '#e3c477', '#6aa7d9'] }
-const WILD: Style = { heading: 'Playfair Display', script: 'DM Serif Display', sans: 'Inter', accent: '#d9a441', ink: '#ffffff', mute: 'rgba(255,255,255,0.8)', dark: '#10160f', tones: ['#6f9a72', '#9c8a62', '#5d7f6a', '#a9835e', '#7b9a8c', '#8c7a58'] }
 const ROAD: Style = { heading: 'Space Grotesk', script: 'DM Serif Display', sans: 'Inter', accent: '#ff6a2b', ink: '#ffffff', mute: 'rgba(255,255,255,0.8)', dark: '#15110f', tones: ['#d98a5f', '#7aa3b5', '#c9a06a', '#8d9a6a', '#b77a6a', '#6f8fb0'] }
 const PACK: Style = { heading: 'Poppins', script: 'DM Serif Display', sans: 'Poppins', accent: '#f5c518', ink: '#ffffff', mute: 'rgba(255,255,255,0.82)', dark: '#0b0f14', tones: ['#68a58a', '#d98c5f', '#7a92c9', '#c9b06a', '#b585a8', '#5fa6b8'] }
-const CITY: Style = { heading: 'Space Grotesk', script: 'DM Serif Display', sans: 'Inter', accent: '#ff4d8d', ink: '#ffffff', mute: 'rgba(255,255,255,0.8)', dark: '#0c0e1a', tones: ['#6f86d6', '#e0805f', '#5fb0b0', '#b085d6', '#d6b06f', '#6fa0d6'] }
 const BEACH: Style = { heading: 'Playfair Display', script: 'DM Serif Display', sans: 'Poppins', accent: '#ff9a76', ink: '#ffffff', mute: 'rgba(255,255,255,0.84)', dark: '#1b1230', tones: ['#f0a27a', '#e0788f', '#7aa6d6', '#f2c27a', '#9a86c9', '#78b9b0'] }
 
 const names = (prefix: string, n: number, from = 1) => Array.from({ length: n }, (_, i) => `${prefix} ${String(i + from).padStart(2, '0')}`)
@@ -249,111 +247,6 @@ function yearRecap(): Project {
 }
 
 // =============================================================================================
-// 4. Wild trails & camping — 3:43, 16:9, Trailhead from bar 8 (104 bars)
-// =============================================================================================
-const WILD_BARS = 104
-function wildTrails(): Project {
-  const bpm = trackById('music-trailhead')!.bpm
-  const dur = barsDuration('music-trailhead', WILD_BARS)
-  const b = new TemplateBuilder('Wild trails & camping · 3:43', '16:9', dur, '#10160f')
-  const F = new Film(b, WILD, bpm)
-  vignette(F, dur, 0.42)
-  progress(F, dur)
-
-  // Morning (0–16)
-  let s = F.scene(4)
-  shot(F, s.t, s.d, 'Cold open · mist in the pines', { kb: 'in', tr: null })
-  caption(F, s.t + 1, s.d - 2.2, 'Leave the signal behind.')
-  s = F.scene(4)
-  b.marker(s.t, 'Title', WILD.accent)
-  titleCard(F, s.t, s.d, { kicker: 'TRAILS · CAMPFIRES · STARS', title: 'INTO THE WILD', subtitle: 'A long weekend off the grid' })
-  s = F.scene(2)
-  b.marker(s.t, 'I · Trailhead', WILD.accent)
-  chapterCard(F, s.t, s.d, { num: 'I', title: 'Trailhead', sub: 'DAY ONE · 06:30', over: true, label: 'Trailhead sign at dawn' })
-  s = F.scene(3)
-  shots(F, s.t, s.d, ['Boots on the trail', 'Creek crossing'])
-  locationTag(F, s.t + 0.8, s.d - 1.6, 'BLACK FOREST NP', '48.54° N · 8.21° E')
-  s = F.scene(3)
-  shot(F, s.t, s.d, 'Into the pines', { kb: 'right' })
-  lowerThird(F, s.t + 0.6, s.d - 1.2, { title: 'Into the pines', sub: '9 km · 420 m ascent', tag: 'DAY 01' })
-
-  // Build (16–24)
-  s = F.scene(8)
-  b.marker(s.t, 'Momentum', '#e3a05a')
-  shots(F, s.t, s.d, names('Trail moment', 16), { fast: true })
-
-  // Ridge (24–40)
-  s = F.scene(2)
-  b.marker(s.t, 'II · The Ridge', WILD.accent)
-  chapterCard(F, s.t, s.d, { num: 'II', title: 'The Ridge', sub: 'SUMMIT · 2,310 M', over: true, label: 'Ridge line in the morning light' })
-  s = F.scene(6)
-  shots(F, s.t, s.d, ['Open ridge', 'Wildflowers', 'Valley below'])
-  locationTag(F, s.t + 0.8, F.at(1.8), 'HOHER IFEN', '47.37° N · 10.10° E')
-  locationTag(F, s.t + F.at(2.2), F.at(1.8), 'WIDDERSTEIN', '47.28° N · 10.19° E')
-  s = F.scene(4)
-  stats(F, s.t, s.d, [{ value: '24 km', label: 'WALKED' }, { value: '1,180 m', label: 'CLIMBED' }, { value: '2 nights', label: 'UNDER CANVAS' }], { label: 'Stats backdrop · ridge' })
-  s = F.scene(4)
-  triptych(F, s.t, s.d, ['Cairn', 'Wild thyme', 'Cloud shadows'])
-
-  // Campfire (40–56)
-  s = F.scene(2)
-  b.marker(s.t, 'III · Campfire', WILD.accent)
-  chapterCard(F, s.t, s.d, { num: 'III', title: 'Campfire', sub: 'DAY TWO · 19:40' })
-  s = F.scene(3)
-  polaroid(F, s.t, s.d, { label: 'Camp kitchen', caption: 'dinner at 2,000 m', date: '14 SEP', side: 'left', rot: -3, paper: '#efe6d3' })
-  s = F.scene(3)
-  polaroid(F, s.t, s.d, { label: 'Fire glow', caption: 'stories by the fire', date: '14 SEP', side: 'right', rot: 3, paper: '#efe6d3' })
-  s = F.scene(4)
-  shots(F, s.t, s.d, ['Flames up close', 'Marshmallows'])
-  caption(F, s.t + 0.8, s.d - 1.8, 'Dinner tastes better when you carried it.')
-  s = F.scene(4)
-  quote(F, s.t, s.d, { text: 'In every walk with nature one receives far more than he seeks.', author: '— JOHN MUIR', bg: WILD.dark })
-
-  // Night (56–72)
-  s = F.scene(4)
-  b.marker(s.t, 'IV · Night', '#9aa5c4')
-  shot(F, s.t, s.d, 'Milky Way above the tent', { kb: 'up', tone: '#3b4a6b' })
-  keyline(F, s.t + 0.6, s.d - 1.2)
-  caption(F, s.t + 1, s.d - 2.2, 'More stars than you thought were allowed.')
-  s = F.scene(4)
-  shot(F, s.t, s.d, 'Star trails', { kb: 'left', tone: '#2f3d5c' })
-  caption(F, s.t + 1, s.d - 2.2, 'Time moves differently out here.')
-  s = F.scene(4)
-  shots(F, s.t, s.d, ['Dawn mist', 'First light on the tent'])
-  lowerThird(F, s.t + 0.8, s.d - 1.6, { title: 'First light', sub: 'Day 3 · 06:12', tag: 'DAY 03' })
-  s = F.scene(4)
-  bigStatement(F, s.t, s.d, 'STILLNESS', { sub: 'NO SIGNAL · NO RUSH', label: 'Lake in the morning calm' })
-
-  // Build 2 (72–80)
-  s = F.scene(8)
-  b.marker(s.t, 'Heading home', '#e3a05a')
-  shots(F, s.t, s.d, names('Trail moment', 16, 17), { fast: true })
-
-  // The way back (80–96)
-  s = F.scene(2)
-  b.marker(s.t, 'V · The Way Back', WILD.accent)
-  chapterCard(F, s.t, s.d, { num: 'V', title: 'The Way Back', sub: 'DAY THREE · 10:00', over: true, label: 'Last view of the valley' })
-  s = F.scene(6)
-  shots(F, s.t, s.d, ['Forest descent', 'Old stone bridge', 'Trailhead again'])
-  lowerThird(F, s.t + F.at(2.2), F.at(1.7), { title: 'Back where we started', sub: 'Slightly different people', tag: 'DAY 03' })
-  s = F.scene(4)
-  stats(F, s.t, s.d, [{ value: '38 km', label: 'IN TOTAL' }, { value: '3 days', label: 'OFF THE GRID' }, { value: '0 bars', label: 'OF SIGNAL' }], { label: 'Stats backdrop · valley' })
-  s = F.scene(4)
-  triptych(F, s.t, s.d, ['Dusty boots', 'Trail map', 'Sunburnt smiles'])
-
-  // Outro (96–104)
-  s = F.scene(4)
-  b.marker(s.t, 'Credits', '#a3a7b3')
-  credits(F, s.t, s.d, { heading: 'INTO THE WILD', lines: ['FILMED BY', 'Your Name', '', 'MUSIC', 'Trailhead · Trailhead original', '', 'THANKS TO', 'Good boots and strong coffee'] })
-  s = F.scene(4)
-  endCard(F, s.t, s.d, { title: 'Leave only footprints', sub: 'wild.example', handle: '@yourhandle' })
-
-  b.audioTrack('Music · Trailhead (Trailhead original)')
-  b.music('music-trailhead', { fromBar: 8, fadeIn: 1.5, fadeOut: F.at(4) })
-  return b.done()
-}
-
-// =============================================================================================
 // 5. Road trip diary — 2:58, 16:9, Open Road from bar 32 (92 bars)
 // =============================================================================================
 const ROAD_BARS = 92
@@ -530,62 +423,6 @@ function backpacker(): Project {
 }
 
 // =============================================================================================
-// 7. City break weekend — 2:00, 9:16, Open Road from bar 16 (62 bars)
-// =============================================================================================
-const CITY_BARS = 62
-function spot(F: Film, n: number, o: { kind: string; name: string; note: string; label: string }) {
-  let s = F.scene(4)
-  shot(F, s.t, s.d, o.label, { kb: (['in', 'right', 'out', 'left'] as const)[n % 4] })
-  dayChip(F, s.t + 0.3, s.d - 0.8, `${String(n).padStart(2, '0')} · ${o.kind}`)
-  lowerThird(F, s.t + 0.6, s.d - 1.4, { title: o.name, sub: o.note })
-  void s
-}
-
-function cityBreak(): Project {
-  const bpm = trackById('music-open-road')!.bpm
-  const dur = barsDuration('music-open-road', CITY_BARS)
-  const b = new TemplateBuilder('City break weekend · 2:00', '9:16', dur, '#0c0e1a')
-  const F = new Film(b, CITY, bpm)
-  vignette(F, dur, 0.36)
-  progress(F, dur)
-
-  let s = F.scene(4)
-  b.marker(s.t, 'Title', CITY.accent)
-  titleCard(F, s.t, s.d, { kicker: 'CITY BREAK GUIDE', title: 'LISBON IN 48 HOURS', subtitle: 'where to eat · what to see', tr: null })
-  b.marker(F.time, 'Day 1', CITY.accent)
-  spot(F, 1, { kind: 'EAT', name: 'Time Out Market', note: 'Twelve kitchens, one long table', label: 'Time Out Market · food hall' })
-  spot(F, 2, { kind: 'SEE', name: 'Alfama at golden hour', note: 'Climb to Miradouro das Portas do Sol', label: 'Alfama rooftops' })
-  spot(F, 3, { kind: 'DO', name: 'Tram 28', note: 'Go early, hold on tight', label: 'Tram 28 on a cobbled hill' })
-  s = F.scene(4)
-  b.marker(s.t, 'Interlude', '#9aa5c4')
-  quote(F, s.t, s.d, { text: 'Travel is the only thing you buy that makes you richer.', author: '— ANONYMOUS', bg: CITY.dark })
-  s = F.scene(4)
-  polaroid(F, s.t, s.d, { label: 'Pastel de nata', caption: 'warm, always warm', date: 'DAY 01', side: 'left', rot: -3, paper: '#101424', ink: '#f2eee6' })
-  s = F.scene(8)
-  b.marker(s.t, 'Speed round', '#e3a05a')
-  shots(F, s.t, s.d, names('City moment', 16), { fast: true })
-  b.marker(F.time, 'Day 2', CITY.accent)
-  spot(F, 4, { kind: 'SEE', name: 'Belém Tower', note: 'Gothic, riverside and free to admire', label: 'Belém Tower at sunrise' })
-  spot(F, 5, { kind: 'EAT', name: 'Pastéis de Belém', note: 'The original recipe since 1837', label: 'Pastéis de Belém queue' })
-  spot(F, 6, { kind: 'DO', name: 'LX Factory', note: 'Bookshops, murals and espresso', label: 'LX Factory street art' })
-  spot(F, 7, { kind: 'SEE', name: 'Sunset at Miradouro', note: 'Bring wine, arrive early', label: 'Miradouro da Graça' })
-  s = F.scene(4)
-  b.marker(s.t, 'Highlights', CITY.accent)
-  shots(F, s.t, s.d, ['Rooftop view', 'Tile facades'])
-  caption(F, s.t + 0.8, s.d - 1.8, 'Forty-eight hours is never enough.')
-  s = F.scene(4)
-  polaroid(F, s.t, s.d, { label: 'Sunset wine', caption: 'last light over the Tagus', date: 'DAY 02', side: 'right', rot: 3, paper: '#101424', ink: '#f2eee6' })
-  s = F.scene(4)
-  stats(F, s.t, s.d, [{ value: '48 h', label: 'IN LISBON' }, { value: '7', label: 'COFFEES' }, { value: '21,340', label: 'STEPS' }], { label: 'Stats backdrop · rooftops' })
-  s = F.scene(2)
-  endCard(F, s.t, s.d, { title: 'Save this guide', sub: 'More city breaks on the channel', handle: '@yourhandle' })
-
-  b.audioTrack('Music · Open Road (Trailhead original)')
-  b.music('music-open-road', { fromBar: 16, fadeIn: 0.5, fadeOut: F.at(3) })
-  return b.done()
-}
-
-// =============================================================================================
 // 8. Beach sunset escape — 2:17, 9:16, Golden Hour from bar 36 (48 bars)
 // =============================================================================================
 const BEACH_BARS = 48
@@ -646,9 +483,7 @@ export const ADVENTURE_TEMPLATES: TemplateDef[] = [
   { id: 'epic-adventure-film', name: 'Epic adventure film', description: `Four-chapter expedition film (${fmt(barsDuration('music-summit', EPIC_BARS))}): cold open, title, chapters, build, summit, credits. Letterbox, subtitles, quotes and stats, cut to Summit.`, category: 'travel', aspect: '16:9', duration: barsDuration('music-summit', EPIC_BARS), previewTime: 19.6, music: 'Summit', build: epicFilm },
   { id: 'island-hopping-journal', name: 'Island hopping journal', description: `Four islands, polaroid pages, place tags and sunset captions (${fmt(barsDuration('music-golden-hour', ISLAND_BARS))}) with the warm Golden Hour track.`, category: 'travel', aspect: '16:9', duration: barsDuration('music-golden-hour', ISLAND_BARS), previewTime: 4.8, music: 'Golden Hour', build: islandHopping },
   { id: 'road-trip-diary', name: 'Road trip diary', description: `Day-by-day route diary (${fmt(barsDuration('music-open-road', ROAD_BARS))}) with day counters, location tags, postcards and a stats finale, cut to Open Road.`, category: 'travel', aspect: '16:9', duration: barsDuration('music-open-road', ROAD_BARS), previewTime: 3.9, music: 'Open Road', build: roadTrip },
-  { id: 'wild-trails-camping', name: 'Wild trails & camping', description: `Trailhead to campfire to stars (${fmt(barsDuration('music-trailhead', WILD_BARS))}): ridge views, polaroids, night skies and a quiet bridge, aligned to Trailhead.`, category: 'travel', aspect: '16:9', duration: barsDuration('music-trailhead', WILD_BARS), previewTime: 9.2, music: 'Trailhead', build: wildTrails },
   { id: 'around-the-world-recap', name: 'Around the world · year recap', description: `Twelve months in four quarters (${fmt(barsDuration('music-trailhead', YEAR_BARS))}): twelve destinations, fast montages and stats per quarter, with Trailhead.`, category: 'travel', aspect: '16:9', duration: barsDuration('music-trailhead', YEAR_BARS), previewTime: 12.4, music: 'Trailhead', build: yearRecap },
   { id: 'backpacker-vlog', name: 'Backpacker vlog', description: `Vertical multi-country vlog (${fmt(barsDuration('music-trailhead', PACK_BARS))}): hook, city chapters, story captions, quotes and fast reels.`, category: 'travel', aspect: '9:16', duration: barsDuration('music-trailhead', PACK_BARS), previewTime: 7.2, music: 'Trailhead', build: backpacker },
-  { id: 'city-break-weekend', name: 'City break weekend', description: `Vertical city guide (${fmt(barsDuration('music-open-road', CITY_BARS))}): numbered EAT / SEE / DO spots, postcards, a speed round and stats, to Open Road.`, category: 'travel', aspect: '9:16', duration: barsDuration('music-open-road', CITY_BARS), previewTime: 12, music: 'Open Road', build: cityBreak },
   { id: 'beach-sunset-escape', name: 'Beach sunset escape', description: `Calm vertical beach diary (${fmt(barsDuration('music-golden-hour', BEACH_BARS))}): golden-hour shots, polaroids, a quote and a soft sign-off with Golden Hour.`, category: 'travel', aspect: '9:16', duration: barsDuration('music-golden-hour', BEACH_BARS), previewTime: 6, music: 'Golden Hour', build: beachEscape },
 ]
